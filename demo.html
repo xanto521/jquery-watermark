@@ -1,0 +1,182 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>test</title>
+    <style type="text/css">
+        body, html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <script src="http://code.jquery.com/jquery-git.js"></script>
+    <script src="jquery.watermark.js"></script>
+</head>
+
+<body style="height: 100%; margin: 0">
+
+<div>
+    <h1>标题</h1>
+    <div>
+        <h2>表格</h2>
+        <table>
+            <tr>
+                <th>id</th>
+                <th>姓名</th>
+                <th>邮箱</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>张三</td>
+                <td>123@qq.com</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>张三</td>
+                <td>123@qq.com</td>
+            </tr>
+        </table>
+
+
+    </div>
+</div>
+
+<div id="container" style="height: 100%"></div>
+
+
+<script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.min.js"></script>
+
+<script type="text/javascript">
+    const dom = document.getElementById('container');
+    const myChart = echarts.init(dom, null, {
+        renderer: 'canvas',
+        useDirtyRect: false
+    });
+    const app = {};
+
+    let option;
+
+    const categories = (function () {
+        let now = new Date();
+        let res = [];
+        let len = 10;
+        while (len--) {
+            res.unshift(now.toLocaleTimeString().replace(/^\D*/, ''));
+            now = new Date(+now - 2000);
+        }
+        return res;
+    })();
+    const categories2 = (function () {
+        let res = [];
+        let len = 10;
+        while (len--) {
+            res.push(10 - len - 1);
+        }
+        return res;
+    })();
+    const data = (function () {
+        let res = [];
+        let len = 10;
+        while (len--) {
+            res.push(Math.round(Math.random() * 1000));
+        }
+        return res;
+    })();
+    const data2 = (function () {
+        let res = [];
+        let len = 0;
+        while (len < 10) {
+            res.push(+(Math.random() * 10 + 5).toFixed(1));
+            len++;
+        }
+        return res;
+    })();
+    option = {
+        title: {
+            text: 'Dynamic Data'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: '#283b56'
+                }
+            }
+        },
+        legend: {},
+        toolbox: {},
+        dataZoom: {
+            show: false,
+            start: 0,
+            end: 100
+        },
+        xAxis: [
+            {
+                type: 'category',
+                boundaryGap: true,
+                data: categories
+            }
+            ,
+            {
+                type: 'category',
+                boundaryGap: true,
+                data: categories2
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                scale: true,
+                name: 'Price',
+                max: 30,
+                min: 0,
+                boundaryGap: [0.2, 0.2]
+            },
+            {
+                type: 'value',
+                scale: true,
+                name: 'Order',
+                max: 1200,
+                min: 0,
+                boundaryGap: [0.2, 0.2]
+            }
+        ],
+        series: [
+            {
+                name: 'Dynamic Bar',
+                type: 'bar',
+                xAxisIndex: 1,
+                yAxisIndex: 1,
+                data: data
+            },
+            {
+                name: 'Dynamic Line',
+                type: 'line',
+                data: data2
+            }
+        ]
+    };
+    app.count = 11;
+
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
+    }
+
+    window.addEventListener('resize', myChart.resize);
+</script>
+<script type="text/javascript">
+    $('body').watermark({
+        texts: ["id: c4259f16"], //水印文字
+        textColor: "rgba(210,210,210,0.51)", //文字颜色
+        textFont: '26px 微软雅黑', //字体
+        width: 400, //水印文字的水平间距
+        height: 200,  //水印文字的高度间距（低于文字高度会被替代）
+        textRotate: -30 //-90到0， 负数值，不包含-90
+    })
+</script>
+
+</body>
+</html>
